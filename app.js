@@ -1,4 +1,5 @@
 //jshint esversion:8
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
@@ -11,15 +12,14 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
-mongoose.connect('mongodb://localhost:27017/secretsDB');
+mongoose.connect(process.env.MONGO);
 
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
 
-const secret = 'This is our little secret.';
-userSchema.plugin(encrypt, {secret: secret, encryptedFields: ['password']});
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ['password']});
 
 const User = new mongoose.model('User', userSchema);
 
