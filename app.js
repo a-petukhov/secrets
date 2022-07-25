@@ -52,12 +52,12 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
     res.render('home');
 });
 
 app.route('/secrets')
-.get((req, res) => {
+.get(function (req, res) {
     if (req.isAuthenticated()) {
         res.render('secrets');
     } else {
@@ -66,15 +66,15 @@ app.route('/secrets')
 });
 
 app.route('/login')
-    .get((req, res) => {
+    .get(function (req, res) {
         res.render('login');
     })
-    .post((req, res) => {
+    .post(function (req, res) {
         const user = new User({
             username: req.body.username,
             password: req.body.password
         });
-        req.login(user, (err) => {
+        req.login(user, function (err) {
             if (err) {
                 console.log(err);
             } else {
@@ -86,10 +86,10 @@ app.route('/login')
     });
 
 app.route('/register')
-    .get((req, res) => {
+    .get(function (req, res) {
         res.render('register');
     })
-    .post((req, res) => {
+    .post(function (req, res) {
         User.register({username: req.body.username, active: true}, req.body.password, function(err, user) {
             if (err) {
                 console.log(err);
@@ -101,7 +101,7 @@ app.route('/register')
         }});
     });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', function (req, res) {
     req.logout((err) => {
         if (err) {
             console.log(err);
@@ -116,6 +116,6 @@ if (port == null || port == '') {
     port = 3000;
 }
 
-app.listen(port, (req, res) => {
+app.listen(port, function (req, res) {
     console.log('Server is now running at port ' + port + '.');
 });
